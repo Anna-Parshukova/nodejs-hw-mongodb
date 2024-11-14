@@ -1,20 +1,20 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import { getContactById, getContacts } from '../services/contacts.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 const router = Router();
 
-router.get('/contacts', async (_, res) => {
+router.get('/contacts', ctrlWrapper(async (_, res) => {
     const data = await getContacts();
     res.json({
       status: 200,
       message: 'Successfully found contacts!',
       data,
     });
-  });
+  })
+);
 
-
-
-  router.get("/contacts/:_id", async (req, res) => {
+router.get("/contacts/:_id", ctrlWrapper(async (req, res) => {
     const { _id } = req.params;
     const data = await getContactById(_id);
 
@@ -30,7 +30,7 @@ router.get('/contacts', async (_, res) => {
       message: 'Successfully found contact!',
       data,
     });
-  });
-
+  })
+);
 
 export default router;
