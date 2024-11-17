@@ -74,11 +74,7 @@ router.delete('/contacts/:_id', ctrlWrapper(async (req, res) => {
         });
     }
 
-    res.json({
-        status: 200,
-        message: 'Contact successfully deleted!',
-        data: deletedContact,
-    });
+    res.status(204).send();
 }));
 
 export default router;

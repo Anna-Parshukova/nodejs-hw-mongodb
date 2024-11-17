@@ -22,8 +22,8 @@ const setupServer = () => {
 
   app.use(logger);
 
-  
-  app.use('/api', contactsRouter);
+
+  app.use('/', contactsRouter);
 
 
   app.use(notFoundHandler);
