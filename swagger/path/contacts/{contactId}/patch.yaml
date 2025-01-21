@@ -1,0 +1,75 @@
+#/swagger/paths/students/post.yaml
+
+tags:
+  - Contacts
+summary: Patch contact
+operationId: patchContact
+description: 'Patch a contact with payload'
+security:
+  - bearerAuth: []
+parameters:
+  - name: id
+    in: path
+    required: true
+    description: 'ID of the contact to patch'
+    schema:
+      type: string
+      example: '65e4decdd286b30065d54af9'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - phoneNumber
+          - contactType
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: 'Phone number'
+            type: string
+            example: '380970000000'
+          email:
+            description: "Contact's email"
+            type: string
+          isFavourite:
+            description: 'Is favourite value , must be boolean'
+            type: boolean
+            example: true
+          contactType:
+            description: 'Type of contact'
+            type: string
+            example: 'personal'
+            enum: ['work', 'home', 'personal']
+          photo:
+            description: "Link to contact's photo"
+            type: string
+            example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+            format: binary
+responses:
+  '200':
+    description: Patch a contact
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully patched a contact
+            data:
+              type: object
+              $ref: ../../../components/schemas/contact.yaml
+  '404':
+    $ref: ../../../components/responses/404.yaml
