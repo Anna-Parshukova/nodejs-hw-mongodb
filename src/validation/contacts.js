@@ -1,21 +1,36 @@
 import Joi from 'joi';
+import { typeList } from '../constants/contacts.js';
 
-import { contactsTypeList } from '../constants/index.js';
-
-export const createContactsSchema = Joi.object({
-  name: Joi.string().min(3).max(20).required(true),
-  phoneNumber: Joi.string().required(true),
-  email: Joi.string().email(),
-  isFavourite: Joi.boolean(),
+export const contactsAddSchema = Joi.object({
+  name: Joi.string()
+    .required()
+    .min(3)
+    .max(20)
+    .messages({ 'any.required': 'Name is required field' }),
+  phoneNumber: Joi.string()
+    .required()
+    .min(3)
+    .max(20)
+    .messages({ 'any.required': 'Phone number is required field' }),
+  email: Joi.string().min(3).max(20),
+  isFavourite: Joi.boolean().default(false),
   contactType: Joi.string()
-    .valid(...contactsTypeList)
-    .required(true),
+    .min(3)
+    .max(20)
+    .valid(...typeList)
+    .required()
+    .default('personal')
+    .messages({ 'any.required': 'Contact type is required field' }),
 });
 
-export const updateContactSchema = Joi.object({
+export const contactsUpdateSchema = Joi.object({
   name: Joi.string().min(3).max(20),
-  phoneNumber: Joi.string(),
-  email: Joi.string().email(),
-  isFavourite: Joi.boolean(),
-  contactType: Joi.string().valid(...contactsTypeList),
+  phoneNumber: Joi.string().min(3).max(20),
+  email: Joi.string().min(3).max(20),
+  isFavourite: Joi.boolean().default(false),
+  contactType: Joi.string()
+    .min(3)
+    .max(20)
+    .valid(...typeList)
+    .default('personal'),
 });

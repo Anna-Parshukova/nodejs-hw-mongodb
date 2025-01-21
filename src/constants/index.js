@@ -1,14 +1,11 @@
 import path from 'node:path';
 
+export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
+
 export const SORT_ORDER = {
   ASC: 'asc',
   DESC: 'desc',
 };
-
-export const FIFTEEN_MINUTES = 15 * 60 * 1000;
-export const ONE_MOUNTH = 30 * 24 * 60 * 60 * 1000;
-
-export const contactsTypeList = ['work', 'home', 'personal'];
 
 export const SMTP = {
   SMTP_HOST: 'SMTP_HOST',
@@ -18,13 +15,12 @@ export const SMTP = {
   SMTP_FROM: 'SMTP_FROM',
 };
 
-export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
+export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
+
+export const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 
 export const CLOUDINARY = {
   CLOUD_NAME: 'CLOUD_NAME',
   API_KEY: 'API_KEY',
   API_SECRET: 'API_SECRET',
 };
-
-export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
-export const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
