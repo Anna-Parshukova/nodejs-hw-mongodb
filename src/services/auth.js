@@ -1,23 +1,33 @@
 import createHttpError from 'http-errors';
-import { UsersCollection } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
+import jwt from 'jsonwebtoken';
+import handlebars from 'handlebars';
+import path from 'node:path';
+import { fileURLToPath } from 'url';
+import fs from 'node:fs/promises';
+
 import {
   FIFTEEN_MINUTES,
   ONE_MOUNTH,
   SMTP,
   TEMPLATES_DIR,
 } from '../constants/index.js';
-import { SessionCollection } from '../db/models/session.js';
-
-import jwt from 'jsonwebtoken';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
-import handlebars from 'handlebars';
-import path from 'node:path';
-import fs from 'node:fs/promises';
 
+// Визначаємо абсолютний шлях до файлу та каталогу
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+// Динамічні імпорти для колекцій
+const UsersCollectionPath = new URL('../db/models/user.js', import.meta.url).href;
+const SessionCollectionPath = new URL('../db/models/session.js', import.meta.url).href;
+
+const { UsersCollection } = await import(UsersCollectionPath);
+const { SessionCollection } = await import(SessionCollectionPath);
+
+// Реалізація функцій
 export const registerUser = async (payload) => {
   const registredUser = await UsersCollection.findOne({ email: payload.email });
   if (registredUser) throw createHttpError(409, 'Email in use');
@@ -29,7 +39,6 @@ export const registerUser = async (payload) => {
     password: encryptedPassword,
   });
 };
-
 
 export const loginUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
@@ -48,6 +57,7 @@ export const loginUser = async (payload) => {
     ...newSession,
   });
 };
+
 export const logoutUser = async (sessionId) => {
   await SessionCollection.findOneAndDelete({ _id: sessionId });
 };
@@ -102,12 +112,12 @@ export const requestResetToken = async (email) => {
       email,
     },
     env('JWT_SECRET'),
-    { expiresIn: '5m' },
+    { expiresIn: '5m' }
   );
 
   const resetPasswordTemplatePath = path.join(
     TEMPLATES_DIR,
-    'reset-password-email.html',
+    'reset-password-email.html'
   );
 
   const templateSource = (
@@ -154,7 +164,7 @@ export const resetPassword = async (payload) => {
       _id: user._id,
     },
     { password: encryptedPassword },
-    { new: true },
+    { new: true }
   );
 
   await SessionCollection.findOneAndDelete({ userId: user._id });
