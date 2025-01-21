@@ -1,44 +1,65 @@
 import { Router } from 'express';
-import ctrlWrapper from '../utils/ctrlWrapper.js';
-
-import * as contactController from '../controllers/contacts.js';
 import {
-  contactsAddSchema,
-  contactsPatchSchema,
+  createContactController,
+  deleteContactController,
+  getAllContactsController,
+  getContactByIdController,
+  updateContactController,
+  upsertContactController,
+} from '../controllers/contacts.js';
+
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { validateBody } from '../middlewares/validateBody.js';
+
+import {
+  createContactsSchema,
+  updateContactSchema,
 } from '../validation/contacts.js';
-import validateBody from '../middlewares/validateBody.js';
+
 import { isValidId } from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
 
 const contactsRouter = Router();
 
 contactsRouter.use(authenticate);
 
-contactsRouter.get('/', ctrlWrapper(contactController.getContactsController));
+
+contactsRouter.get('/', ctrlWrapper(getAllContactsController));
 
 contactsRouter.get(
   '/:contactId',
   isValidId,
-  ctrlWrapper(contactController.getContactsByIdController),
+  ctrlWrapper(getContactByIdController),
 );
 
 contactsRouter.post(
   '/',
-  validateBody(contactsAddSchema),
-  ctrlWrapper(contactController.postContactsController),
+  upload.single('photo'),
+  validateBody(createContactsSchema),
+  ctrlWrapper(createContactController),
 );
 
 contactsRouter.patch(
   '/:contactId',
+  upload.single('photo'),
   isValidId,
-  validateBody(contactsPatchSchema),
-  ctrlWrapper(contactController.patchContactsController),
+  validateBody(updateContactSchema),
+  ctrlWrapper(updateContactController),
 );
 
 contactsRouter.delete(
   '/:contactId',
   isValidId,
-  ctrlWrapper(contactController.deleteContactsByIdController),
+  ctrlWrapper(deleteContactController),
+);
+
+contactsRouter.put(
+  '/:contactId',
+  upload.single('photo'),
+  isValidId,
+  validateBody(createContactsSchema),
+  ctrlWrapper(upsertContactController),
 );
 
 export default contactsRouter;
