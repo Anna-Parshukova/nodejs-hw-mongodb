@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { emailRegexp } from '../../constants/user.js';
+import { emailRegexp } from '../../constants/users.js';
 import { handleSaveError, setUpdateSettings } from './hooks.js';
 
 const userSchema = new Schema(

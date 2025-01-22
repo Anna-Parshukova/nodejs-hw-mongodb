@@ -1,6 +1,5 @@
-export const FIFTEEN_MINUTES = 15 * 60 * 1000;
-export const ONE_DAY = 24 * 60 * 60 * 1000;
-export const THIRTY_DAYS = 30 * ONE_DAY;
+export const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-export const emailRegexp =
-  /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+export const accessTokenLifeTime = 1000 * 60 * 15;
+
+export const refreshTokenLifeTime = 1000 * 60 * 60 * 24 * 30;
