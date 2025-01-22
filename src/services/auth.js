@@ -7,7 +7,7 @@ import { randomBytes } from 'crypto';
 import {
   accessTokenLifeTime,
   refreshTokenLifeTime,
-} from '../constants/user.js';
+} from '../constants/users.js';
 import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendEmail.js';
