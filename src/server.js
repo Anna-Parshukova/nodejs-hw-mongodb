@@ -1,3 +1,5 @@
+// src/server.js
+
 import express from 'express';
 import cors from 'cors';
 import { env } from './utils/env.js';
@@ -10,7 +12,7 @@ import cookieParser from 'cookie-parser';
 import { UPLOAD_DIR } from './constants/index.js';
 import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
-const PORT = Number(env('PORT', '4001'));
+const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
   const app = express();
@@ -26,7 +28,6 @@ export const setupServer = () => {
   app.use('/contacts', contactsRouter);
 
   app.use('/uploads', express.static(UPLOAD_DIR));
-
   app.use('/api-docs', swaggerDocs());
 
   app.use('*', notFoundHandler);
@@ -35,6 +36,5 @@ export const setupServer = () => {
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
   });
 };
